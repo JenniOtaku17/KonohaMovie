@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="KonohaMovieModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="correo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="20" />
+          <Property Name="direccion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="movie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_categoria" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="1000" />
+          <Property Name="estreno" Type="date" />
+        </EntityType>
+        <EntityType Name="renta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_inicio" Type="date" />
+          <Property Name="fecha_fin" Type="date" />
+          <Property Name="estado" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="id_movie" Type="int" />
+          <Property Name="id_cliente" Type="int" />
+          <Property Name="id_admin" Type="int" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="alias" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="correo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="contrasenia" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__movie__id_catego__1A14E395">
+          <End Role="categoria" Type="Self.categoria" Multiplicity="0..1" />
+          <End Role="movie" Type="Self.movie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movie">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__renta__id_admin__20C1E124">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="0..1" />
+          <End Role="renta" Type="Self.renta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="renta">
+              <PropertyRef Name="id_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__renta__id_client__1FCDBCEB">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="renta" Type="Self.renta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="renta">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__renta__id_movie__1ED998B2">
+          <End Role="movie" Type="Self.movie" Multiplicity="0..1" />
+          <End Role="renta" Type="Self.renta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="renta">
+              <PropertyRef Name="id_movie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KonohaMovieModelStoreContainer">
+          <EntitySet Name="categoria" EntityType="Self.categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="movie" EntityType="Self.movie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="renta" EntityType="Self.renta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__movie__id_catego__1A14E395" Association="Self.FK__movie__id_catego__1A14E395">
+            <End Role="categoria" EntitySet="categoria" />
+            <End Role="movie" EntitySet="movie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__renta__id_admin__20C1E124" Association="Self.FK__renta__id_admin__20C1E124">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="renta" EntitySet="renta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__renta__id_client__1FCDBCEB" Association="Self.FK__renta__id_client__1FCDBCEB">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="renta" EntitySet="renta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__renta__id_movie__1ED998B2" Association="Self.FK__renta__id_movie__1ED998B2">
+            <End Role="movie" EntitySet="movie" />
+            <End Role="renta" EntitySet="renta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KonohaMovieModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="categoria">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="movie" Relationship="Self.FK__movie__id_catego__1A14E395" FromRole="categoria" ToRole="movie" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="renta" Relationship="Self.FK__renta__id_client__1FCDBCEB" FromRole="cliente" ToRole="renta" />
+        </EntityType>
+        <EntityType Name="movie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_categoria" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="estreno" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="categoria" Relationship="Self.FK__movie__id_catego__1A14E395" FromRole="movie" ToRole="categoria" />
+          <NavigationProperty Name="renta" Relationship="Self.FK__renta__id_movie__1ED998B2" FromRole="movie" ToRole="renta" />
+        </EntityType>
+        <EntityType Name="renta">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="0" />
+          <Property Name="fecha_fin" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_movie" Type="Int32" />
+          <Property Name="id_cliente" Type="Int32" />
+          <Property Name="id_admin" Type="Int32" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK__renta__id_client__1FCDBCEB" FromRole="renta" ToRole="cliente" />
+          <NavigationProperty Name="movie" Relationship="Self.FK__renta__id_movie__1ED998B2" FromRole="renta" ToRole="movie" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__renta__id_admin__20C1E124" FromRole="renta" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="alias" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contrasenia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="renta" Relationship="Self.FK__renta__id_admin__20C1E124" FromRole="usuario" ToRole="renta" />
+        </EntityType>
+        <Association Name="FK__movie__id_catego__1A14E395">
+          <End Role="categoria" Type="Self.categoria" Multiplicity="0..1" />
+          <End Role="movie" Type="Self.movie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movie">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__renta__id_client__1FCDBCEB">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="renta" Type="Self.renta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="renta">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__renta__id_movie__1ED998B2">
+          <End Role="movie" Type="Self.movie" Multiplicity="0..1" />
+          <End Role="renta" Type="Self.renta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="renta">
+              <PropertyRef Name="id_movie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__renta__id_admin__20C1E124">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="0..1" />
+          <End Role="renta" Type="Self.renta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="renta">
+              <PropertyRef Name="id_admin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KonohaMovieEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categoria" EntityType="Self.categoria" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" />
+          <EntitySet Name="movie" EntityType="Self.movie" />
+          <EntitySet Name="renta" EntityType="Self.renta" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <AssociationSet Name="FK__movie__id_catego__1A14E395" Association="Self.FK__movie__id_catego__1A14E395">
+            <End Role="categoria" EntitySet="categoria" />
+            <End Role="movie" EntitySet="movie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__renta__id_client__1FCDBCEB" Association="Self.FK__renta__id_client__1FCDBCEB">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="renta" EntitySet="renta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__renta__id_movie__1ED998B2" Association="Self.FK__renta__id_movie__1ED998B2">
+            <End Role="movie" EntitySet="movie" />
+            <End Role="renta" EntitySet="renta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__renta__id_admin__20C1E124" Association="Self.FK__renta__id_admin__20C1E124">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="renta" EntitySet="renta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KonohaMovieModelStoreContainer" CdmEntityContainer="KonohaMovieEntities">
+          <EntitySetMapping Name="categoria">
+            <EntityTypeMapping TypeName="KonohaMovieModel.categoria">
+              <MappingFragment StoreEntitySet="categoria">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="KonohaMovieModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="contrasenia" ColumnName="contrasenia" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="movie">
+            <EntityTypeMapping TypeName="KonohaMovieModel.movie">
+              <MappingFragment StoreEntitySet="movie">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="estreno" ColumnName="estreno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="renta">
+            <EntityTypeMapping TypeName="KonohaMovieModel.renta">
+              <MappingFragment StoreEntitySet="renta">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="id_movie" ColumnName="id_movie" />
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="id_admin" ColumnName="id_admin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="KonohaMovieModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="alias" ColumnName="alias" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="contrasenia" ColumnName="contrasenia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
